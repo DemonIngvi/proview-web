@@ -1,0 +1,96 @@
+# Default values for proview-web.
+
+image:
+  repository: ghcr.io/demoningvi/proview-web
+  tag: ""            # defaults to .Chart.AppVersion
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Ignored when autoscaling.enabled=true.
+replicaCount: 2
+args: []
+
+ports:
+  http: 8080   # demo site, SDK (/sdk/proview.js), creatives (/banners/)
+opsPort: 9090  # /healthz /readyz /metrics
+
+env:
+  # SDK endpoints. Empty = same origin through the built-in nginx proxy.
+  BANNER_ENDPOINT: ""
+  COLLECTOR_ENDPOINT: ""
+  # Proxy targets (FQDN: nginx's resolver does not use resolv.conf search domains).
+  BANNER_UPSTREAM: proview-banner-service.proview.svc.cluster.local:8080
+  COLLECTOR_UPSTREAM: proview-event-collector.proview.svc.cluster.local:8080
+
+# Sensitive settings are read from a Secret.
+secret:
+  existingSecret: ""
+  keys: []
+  values: {}
+
+# Extra env vars from other Secrets: [{name, secretName, key}]
+extraSecretEnv: []
+
+service:
+  type: ClusterIP
+
+# Static files are best served from a CDN in production; these pods are the origin.
+resources:
+  requests: { cpu: 50m, memory: 32Mi }
+  limits: { cpu: 500m, memory: 128Mi }
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+
+terminationGracePeriodSeconds: 30
+
+serviceAccount:
+  create: true
+  name: ""
+
+ingress:
+  enabled: false
+  className: nginx
+  servicePort: http
+  annotations: {}
+  hosts:
+    - host: demo.proview.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+serviceMonitor:
+  enabled: false
+  interval: 15s
+
+networkPolicy:
+  enabled: false
+  from:
+    http: []    # empty = allow from anywhere (ingress controller)
+    ops: []
+
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+# nginx needs writable dirs with readOnlyRootFilesystem.
+volumes:
+  - name: tmp
+    emptyDir: {}
+  - name: conf
+    emptyDir: {}
+volumeMounts:
+  - name: tmp
+    mountPath: /tmp
+  - name: conf
+    mountPath: /etc/nginx/conf.d

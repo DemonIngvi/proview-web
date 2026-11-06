@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Техно-вестник · демо ProView</title>
+  <link rel="stylesheet" href="site.css">
+  <script src="config.js"></script>
+  <script type="module" src="sdk/proview.js"></script>
+  <script type="module" src="debug.js"></script>
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="logo" href="./">Техно<span>вестник</span></a>
+      <nav><a href="#">Новости</a><a href="#">Обзоры</a><a href="#">Гайды</a></nav>
+    </div>
+  </header>
+
+  <div class="wrap slot-row">
+    <div class="ad-slot leaderboard" data-proview-placement="home_top" aria-label="Рекламный блок"></div>
+  </div>
+
+  <div class="wrap layout">
+    <article>
+      <p class="kicker">Демо-страница</p>
+      <h1>Как считать вовлечённость рекламы без компромиссов</h1>
+      <p class="lead">Эта страница — стенд платформы ProView. Баннеры выше, справа и внизу загружаются из пула через
+        <code>banner-service</code>, а SDK отправляет в <code>event-collector</code> показы, видимость, наведения, клики и активное время.</p>
+      <p>Прокрутите страницу, подержите курсор над баннером, переключите вкладку и вернитесь — каждое действие становится
+        событием. Через пару секунд оно появится в панели аналитики: Kafka доставит его в ClickHouse, а материализованные
+        представления обновят агрегаты.</p>
+      <h2>Что считается</h2>
+      <ul>
+        <li><b>Показ</b> — креатив загрузился на странице.</li>
+        <li><b>Видимый показ</b> — не меньше половины баннера было в окне не меньше секунды подряд (стандарт IAB).</li>
+        <li><b>Наведение</b> — курсор над баннером дольше 100 мс, с длительностью.</li>
+        <li><b>Клик</b> — переход по креативу.</li>
+        <li><b>Активное время</b> — сколько баннер был виден при активной вкладке.</li>
+      </ul>
+      <h2>Почему это сложно на 20 тысячах запросов в секунду</h2>
+      <p>Каждое событие проходит путь браузер → сборщик → Kafka → загрузчик → ClickHouse. Ни один шаг не ждёт следующего:
+        сборщик отвечает сразу после постановки в буфер, загрузчик пишет пачками и коммитит смещения только после записи.
+        Если ClickHouse недоступен, события копятся в Kafka и дозагружаются после восстановления.</p>
+      <p class="filler">Ниже — блок текста, чтобы нижний баннер появлялся в окне только после прокрутки. Так видно, что «видимость»
+        отличается от «показа».</p>
+      <div class="spacer" aria-hidden="true"></div>
+      <p>Вы дочитали до конца — нижний баннер должен стать «видимым».</p>
+    </article>
+    <aside>
+      <div class="ad-slot rectangle" data-proview-placement="sidebar" aria-label="Рекламный блок"></div>
+      <div class="note">Откройте <code>?debug=1</code>, чтобы видеть отправляемые события.</div>
+    </aside>
+  </div>
+
+  <div class="wrap slot-row">
+    <div class="ad-slot billboard" data-proview-placement="footer" aria-label="Рекламный блок"></div>
+  </div>
+
+  <footer class="site-foot"><div class="wrap">Демо-контент. Бренды на баннерах вымышленные.</div></footer>
+  <pre id="debug" hidden></pre>
+</body>
+</html>

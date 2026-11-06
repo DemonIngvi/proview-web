@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="728" height="90" viewBox="0 0 728 90" font-family="system-ui,-apple-system,Segoe UI,sans-serif">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d366b"/><stop offset="1" stop-color="#2a78d6"/></linearGradient></defs>
+  <rect width="728" height="90" rx="8" fill="url(#g)"/>
+  <circle cx="45.0" cy="45.0" r="28.8" fill="#86b6ef" opacity=".9"/>
+  <circle cx="45.0" cy="45.0" r="14.4" fill="#0d366b"/>
+  <text x="96" y="41.0" font-size="26" font-weight="700" fill="#fff">Aurora Cloud</text>
+  <text x="96" y="65.0" font-size="14" fill="#86b6ef">Серверы за 60 секунд. Первый месяц бесплатно</text>
+  <rect x="558" y="25.0" width="150" height="40" rx="20" fill="#fff"/>
+  <text x="633" y="51.0" font-size="16" font-weight="600" text-anchor="middle" fill="#0d366b">Попробовать</text>
+  <text x="720" y="84" font-size="9" text-anchor="end" fill="#fff" opacity=".6">Реклама</text>
+</svg>

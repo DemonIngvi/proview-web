@@ -1,0 +1,10 @@
+apiVersion: v2
+name: proview-web
+description: "ProView demo site and browser SDK (nginx)"
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.29.0-0"
+home: https://github.com/DemonIngvi/proview-web
+sources: [https://github.com/DemonIngvi/proview-web]
+keywords: [proview, advertising]

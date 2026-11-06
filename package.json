@@ -1,0 +1,8 @@
+{
+  "name": "proview-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"sdk/*.test.js\""
+  }
+}
